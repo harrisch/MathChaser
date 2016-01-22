@@ -3,7 +3,7 @@
 
     public int leftOperand { get; set; }
     public int rightOperand { get; set; }
-    protected Operator operation;
+    private Operator operation;
 
     private int result;
 
@@ -15,4 +15,11 @@
     }
 
     public abstract int getResult();
+
+    public abstract string getDisplayEquation();
+
+    public Operator getOperation()
+    {
+        return operation;
+    }
 }
