@@ -1,1 +1,6 @@
-﻿using UnityEngine;using System.Collections;public interface IEquationGenerator {    Equation generate();       }
+﻿using UnityEngine;
+using System.Collections;
+
+public interface IEquationGenerator {
+    Equation generate();       
+}

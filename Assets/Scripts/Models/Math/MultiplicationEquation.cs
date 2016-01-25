@@ -5,11 +5,13 @@ using System;
 
 public class MultiplicationEquation : Equation
 {
-    List<IVarianceGenerator> varianceGenerators = new List<IVarianceGenerator>();    
+    List<IVarianceGenerator> varianceGenerators = new List<IVarianceGenerator>();
+    
     public MultiplicationEquation(int leftOperand, int rightOperand) : base (leftOperand, rightOperand, Equation.Operator.MULTIPLY)
     {
         varianceGenerators.Add(new RangeVarianceGenerator(-10, 10));
-        int[] setVariance = { leftOperand - 1 * rightOperand , rightOperand - 1 * leftOperand };        varianceGenerators.Add(new SetVarianceGenerator(setVariance));
+        int[] setVariance = { leftOperand - 1 * rightOperand , rightOperand - 1 * leftOperand };
+        varianceGenerators.Add(new SetVarianceGenerator(setVariance));
     }
 
     public override int getResult()
@@ -31,7 +33,7 @@ public class MultiplicationEquation : Equation
         {
             IVarianceGenerator varianceGenerator = varianceGenerators[UnityEngine.Random.Range(0, varianceGenerators.Count)];
             guess = trueAnswer + varianceGenerator.generateVariance();
-        } while (guesses.Contains(guess));
+        } while (guesses.Contains(guess) && guess != trueAnswer);
 
         return guess;
     }
