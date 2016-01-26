@@ -2,30 +2,15 @@
 using System.Linq;
 using UnityEngine;
 
-/// <summary>
-/// Parallax scrolling script that should be assigned to a layer
-/// </summary>
 public class Scroller : MonoBehaviour
 {
-	/// <summary>
-	/// Scrolling speed
-	/// </summary>
-	public Vector2 speed = new Vector2(10, 10);
+    public int speed = 10;	
+		
+    public int direction = -1;
 	
-	/// <summary>
-	/// Moving direction
-	/// </summary>
-	public Vector2 direction = new Vector2(-1, 0);
-	
-	/// <summary>
-	/// 1 - Background is infinite
-	/// </summary>
 	public bool isLooping = false;
 	
-	/// <summary>
-	/// 2 - List of children with a renderer.
-	/// </summary>
-	private List<Transform> backgroundPart;
+	private List<Transform> backgroundParts;
 	
 	// 3 - Get all the children
 	void Start()
@@ -34,7 +19,7 @@ public class Scroller : MonoBehaviour
 		if (isLooping)
 		{
 			// Get all the children of the layer with a renderer
-			backgroundPart = new List<Transform>();
+			backgroundParts = new List<Transform>();
 			
 			for (int i = 0; i < transform.childCount; i++)
 			{
@@ -43,7 +28,7 @@ public class Scroller : MonoBehaviour
 				// Add only the visible children
 				if (child.GetComponent<Renderer>() != null)
 				{
-					backgroundPart.Add(child);
+					backgroundParts.Add(child);
 				}
 			}
 			
@@ -51,7 +36,7 @@ public class Scroller : MonoBehaviour
 			// Note: Get the children from left to right.
 			// We would need to add a few conditions to handle
 			// all the possible scrolling directions.
-			backgroundPart = backgroundPart.OrderBy(
+			backgroundParts = backgroundParts.OrderBy(
 				t => t.position.x
 				).ToList();
 		}
@@ -61,8 +46,8 @@ public class Scroller : MonoBehaviour
 	{
 		// Movement
 		Vector3 movement = new Vector3(
-			speed.x * direction.x,
-			speed.y * direction.y,
+			speed * direction,
+			0,
 			0);
 		
 		movement *= Time.deltaTime;
@@ -73,7 +58,7 @@ public class Scroller : MonoBehaviour
 		{
 			// Get the first object.
 			// The list is ordered from left (x position) to right.
-			Transform firstChild = backgroundPart.FirstOrDefault();
+			Transform firstChild = backgroundParts.FirstOrDefault();
 			
 			if (firstChild != null)
 			{
@@ -88,19 +73,18 @@ public class Scroller : MonoBehaviour
 					if (firstChild.GetComponent<Renderer>().isVisible == false)
 					{
 						// Get the last child position.
-						Transform lastChild = backgroundPart.LastOrDefault();
+						Transform lastChild = backgroundParts.LastOrDefault();
 						Vector3 lastPosition = lastChild.transform.position;
 						Vector3 lastSize = (lastChild.GetComponent<Renderer>().bounds.max - lastChild.GetComponent<Renderer>().bounds.min);
 						
 						// Set the position of the recyled one to be AFTER
 						// the last child.
-						// Note: Only work for horizontal scrolling currently.
 						firstChild.position = new Vector3(lastPosition.x + lastSize.x, firstChild.position.y, firstChild.position.z);
 						
 						// Set the recycled child to the last position
 						// of the backgroundPart list.
-						backgroundPart.Remove(firstChild);
-						backgroundPart.Add(firstChild);
+						backgroundParts.Remove(firstChild);
+						backgroundParts.Add(firstChild);
 					}
 				}
 			}
