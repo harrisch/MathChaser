@@ -8,7 +8,9 @@ public class MathController : MonoBehaviour
     public Text equationText;
     public Button[] inputButtons;    
     private Equation currentEquation;
-    public GameController gameController;
+
+	public delegate void OnQuestionAnsweredEvent(bool correct);
+	public event OnQuestionAnsweredEvent OnQuestionAnswered;
 
     public void setupQuestion()
     {
@@ -65,16 +67,15 @@ public class MathController : MonoBehaviour
 
     public void buttonClicked(Button button)
     {
-        disableButtons();
+		disableButtons();
         if (button.GetComponentInChildren<Text>().text.Equals(currentEquation.getResult().ToString()))
         {
             equationText.text = "YOU WIN!";
-            gameController.Points = gameController.Points + 100;
+			OnQuestionAnswered (true);            
         }
         else {
             equationText.text = "YOU LOSE!";
-            gameController.Points = gameController.Points - 100;
+			OnQuestionAnswered (false);
         }
-        StartCoroutine(gameController.resetLevel());
     }
 }

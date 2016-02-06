@@ -33,7 +33,7 @@ public class MultiplicationEquation : Equation
         {
             IVarianceGenerator varianceGenerator = varianceGenerators[UnityEngine.Random.Range(0, varianceGenerators.Count)];
             guess = trueAnswer + varianceGenerator.generateVariance();
-        } while (guesses.Contains(guess) && guess != trueAnswer);
+        } while (guesses.Contains(guess) || guess == trueAnswer);
 
         return guess;
     }
