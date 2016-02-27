@@ -4,9 +4,11 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 	private Rigidbody2D body;
 
-	public int jumpStrength = 100;
+	public static int jumpStrength = 100;
 
-	public int stumbleStrength = 100;
+	public static int stumbleStrength = 100;
+
+	public static int forwardStrength = 80;
 
 	// Use this for initialization
 	void Start () {
@@ -18,15 +20,15 @@ public class PlayerController : MonoBehaviour {
 				
 	}
 
-	public void jump() {
-		body.AddForce (new Vector2 (0, jumpStrength));
+	public void jump(int strength) {
+		body.AddForce (new Vector2 (0, strength));
 	}
 
-	public void stumble() {
-		body.AddForce (new Vector2 (-stumbleStrength, 0));
+	public void stumble(int strength) {
+		body.AddForce (new Vector2 (-strength, 0));
 	}
 
-	public void forward() {
-		body.AddForce (new Vector2 (80, 0));
+	public void forward(int strength) {
+		body.AddForce (new Vector2 (strength, 0));
 	}
 }

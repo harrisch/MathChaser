@@ -5,7 +5,6 @@ public class EnemySpawnController : MonoBehaviour {
 	public GameObject enemyObject;
 	public GameObject playerObject;
 
-	public GameObject instantiated;
 	// Use this for initialization
 	void Start () {
 		
@@ -17,12 +16,8 @@ public class EnemySpawnController : MonoBehaviour {
 	}
 
 	public GameObject spawn() {
-		instantiated = (GameObject) Instantiate (enemyObject, new Vector3(playerObject.transform.position.x + 30, playerObject.transform.position.y, 0), Quaternion.identity);
+		GameObject instantiated = (GameObject) Instantiate (enemyObject, new Vector3(playerObject.transform.position.x + 30, playerObject.transform.position.y, 0), Quaternion.identity);
 
 		return instantiated;
-	}
-
-	public void destroy() {
-		Destroy (instantiated);
 	}
 }
